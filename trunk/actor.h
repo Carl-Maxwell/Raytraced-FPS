@@ -7,7 +7,7 @@
 
 #include "mvec3.h"
 #include "mmath.h"
-// #include "texture.h"
+// #include "texture.h" // compile error: cstring(26,13): error C2039: 'memchr': is not a member of '`global namespace''
 
 class Texture;
 
@@ -15,31 +15,10 @@ enum class PrimitiveType{
   not_set, sphere, billboard
 };
 
-// struct Primitive{
-//   PrimitiveType pType;
-// };
-
-// TODO don't put struct Data into global namespace
-  // either call it ActorData or ActorModule::Data or something
-
-// struct Data{
-//   std::byte block_of_memory[512];
-//   inline void* memory(i32 offset) {
-//     return ( (void*)( (std::byte*)(&block_of_memory) + offset ) );
-//   };
-//   inline f32* to_f32(i32 offset) {
-//     return (f32*)( memory(offset) );
-//   };
-//   inline m::vec3* to_vec3(i32 offset) {
-//     return (m::vec3*)( memory(offset) );
-//   };
-// };
-
 class Actor{
 public:
   PrimitiveType m_pType;
   m::vec3 m_position;
-  // Data m_data;
 
   union ActorData{
     struct Generic{

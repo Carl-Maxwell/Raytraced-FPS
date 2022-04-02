@@ -194,12 +194,19 @@ int main() {
 
   *(map + 3 * 100 + 0) = true; // the only wall
 
+  //---------------------------------------------------------------------------
+  // Actors
+  //---------------------------------------------------------------------------
+
+  //
   // Setup the spheres
+  //
 
   const int sphere_count = 100;
   const int sphere_max_radius = 2.0f;
   Actor sphere[sphere_count];
-  // m::vec4 sphere[sphere_count];
+
+  // TODO is there some way to have sphere_uniform setup without setting the memory every frame?
   m::vec4* sphere_uniform = new m::vec4[sphere_count];
 
   for(int i = 0; i < sphere_count; i += 1) {
@@ -209,22 +216,21 @@ int main() {
       RNG.randf(-3, 3),
       RNG.randf(-20, 20)
     );
-    // *(sphere[i].sphereRadius()) = RNG.randf(0.3f, sphere_max_radius);
     sphere[i].sphere()->radius = RNG.randf(0.3f, sphere_max_radius);
   }
 
   sphere[0].m_position.x = 0;
   sphere[0].m_position.y = -100.0f;
   sphere[0].m_position.z = 0;
-  // *(sphere[0].sphereRadius()) = 100.0f;
   sphere[0].sphere()->radius = 100.0f;
 
   m::vec3 cameraPosition = {20.0f, 1.0f, 1.0f};
-  // float playerForwardVector[2] = {1.f, 0.f};
   float camera_yaw = 0;
   float camera_pitch = 0;
 
+  //
   // Billboard Actors
+  //
 
   int billboard_count = 4;
 
@@ -241,8 +247,12 @@ int main() {
     billboardTargetPositions[i] = billboardPosition[i] * -1;
   }
 
+  //---------------------------------------------------------------------------
+  // Initialize Graphics
+  //---------------------------------------------------------------------------
+
   //
-  // Initilizing glfw
+  // Initialize glfw
   //
 
   GLFWwindow* window;
@@ -321,9 +331,9 @@ int main() {
   badGuyImage.bind();
   shader.SetUniform1i("u_texture", 0);
 
-  //
+  //---------------------------------------------------------------------------
   // Main loop
-  //
+  //---------------------------------------------------------------------------
 
   // setup mouse position variables
 
@@ -401,13 +411,13 @@ int main() {
       cameraPosition.z += -distance * cos(yaw);
     }
 
+    //
     // send variables off to shader
-
-    // TODO this is allocating stuff on the heap every frame :/
+    //
 
     for (int i=0; i < sphere_count; i++) {
       sphere_uniform[i] = sphere[i].m_position;
-      // sphere_uniform[i].w = *(sphere[i].sphereRadius());
+
       sphere_uniform[i].w = sphere[i].sphere()->radius;
     }
 
@@ -424,7 +434,6 @@ int main() {
     float movescale = 0.03f;
 
     for (int i=0; i < sphere_count; i++) {
-      // float radius = *(sphere[ i ].sphereRadius());
       float radius = sphere[ i ].sphere()->radius;
 
       if (radius > sphere_max_radius) {
@@ -438,12 +447,7 @@ int main() {
       sphere[ i ].m_position.y += movescale * ( RNG.randf(-1, 1) ) * energy;
       sphere[ i ].m_position.z += movescale * ( RNG.randf(-1, 1) ) * energy;
 
-      // if (sphere[i].y-radius < 0 && radius < 4.0f) {
-      //   sphere[i].y += 0.005f;
-      // }
-
       for (int i2 = 0; i2 < sphere_count; i2++) {
-        // float big_radius = *(sphere[i].sphereRadius()) + *(sphere[i2].sphereRadius());
         float big_radius = sphere[i].sphere()->radius + sphere[i2].sphere()->radius;
 
         if (i == i2) {
@@ -454,7 +458,6 @@ int main() {
         m::vec3 position2 = sphere[i2].m_position;
 
         if ((position - position2).length() < big_radius) {
-          //if (*(sphere[i].sphereRadius()) < *(sphere[i2].sphereRadius())) {
           if (sphere[i].sphere()->radius < sphere[i2].sphere()->radius) {
             position  = position  + (position  - position2).norm() * 0.1;
           } else {
