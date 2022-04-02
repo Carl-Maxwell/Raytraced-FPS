@@ -17,32 +17,29 @@
 mono_crash.*
 
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-[Ww][Ii][Nn]32/
-[Aa][Rr][Mm]/
-[Aa][Rr][Mm]64/
-bld/
-[Bb]in/
-[Oo]bj/
-[Ll]og/
-[Ll]ogs/
+trunk/[Dd]ebug/
+trunk/[Dd]ebugPublic/
+trunk/[Rr]elease/
+trunk/[Rr]eleases/
+trunk/x64/
+trunk/x86/
+trunk/[Ww][Ii][Nn]32/
+trunk/[Aa][Rr][Mm]/
+trunk/[Aa][Rr][Mm]64/
+trunk/bld/
+trunk/[Bb]in/
+trunk/[Oo]bj/
+trunk/[Ll]og/
+trunk/[Ll]ogs/
 
 # Visual Studio 2015/2017 cache/options directory
-.vs/
+trunk/.vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
 
-# Visual Studio 2017 auto generated files
-Generated\ Files/
-
 # MSTest test Results
-[Tt]est[Rr]esult*/
-[Bb]uild[Ll]og.*
+trunk/[Tt]est[Rr]esult*/
+trunk/[Bb]uild[Ll]og.*
 
 # NUnit
 *.VisualState.xml
@@ -50,9 +47,9 @@ TestResult.xml
 nunit-*.xml
 
 # Build Results of an ATL Project
-[Dd]ebugPS/
-[Rr]eleasePS/
-dlldata.c
+trunk/[Dd]ebugPS/
+trunk/[Rr]eleasePS/
+trunk/dlldata.c
 
 # Benchmark Results
 BenchmarkDotNet.Artifacts/
