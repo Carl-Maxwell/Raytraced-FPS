@@ -374,15 +374,15 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # VS Code files for those working on multiple tools
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-*.code-workspace
+trunk/.vscode/*
+trunk/!.vscode/settings.json
+trunk/!.vscode/tasks.json
+trunk/!.vscode/launch.json
+trunk/!.vscode/extensions.json
+trunk/*.code-workspace
 
 # Local History for Visual Studio Code
-.history/
+trunk/.history/
 
 # Windows Installer files from build outputs
 *.cab
