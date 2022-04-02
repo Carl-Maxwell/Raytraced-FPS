@@ -13,6 +13,8 @@
 // Logging
 //
 
+#define LOG(n) Log::the().push(std::to_string(n));
+
 class Log{
 public:
   static Log& the() {
