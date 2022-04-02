@@ -19,7 +19,7 @@ uniform float cameraYaw;
 uniform float cameraPitch;
 uniform vec3 cameraPosition;
 uniform int billboard_count = 3;
-uniform vec3 billboardPosition[100];
+uniform vec3 billboardPositions[100];
 
 uniform sampler2D u_texture;
 
@@ -168,8 +168,8 @@ void main() {
 
   for (int i = 0; i < billboard_count; i++) {
     vec3 billboardSize = vec3(1, 2, 1);
-    // vec3 billboardPosition = false ? vec3(0, 0, 0) : startingCameraPosition + vec3(15, 0, 0);
-    vec3 billboardNormal = normalize(billboardPosition[i] - cameraPosition);
+    // vec3 billboardPositions = false ? vec3(0, 0, 0) : startingCameraPosition + vec3(15, 0, 0);
+    vec3 billboardNormal = normalize(billboardPositions[i] - cameraPosition);
     // vec3 cameraRightVector = vec3(
     //   sin(nRayDirection.x),
     //   nRayDirection.y,
@@ -187,7 +187,7 @@ void main() {
 
     // this website says the equation is ( https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-plane-and-ray-disk-intersection )
     // float rayLength =
-    //   dot( (cameraPosition - billboardPosition[i]), billboardNormal )
+    //   dot( (cameraPosition - billboardPositions[i]), billboardNormal )
     //   /
     //   dot(nRayDirection, billboardNormal)
     // ;
@@ -196,14 +196,14 @@ void main() {
     // It seems like it's always -1 * length(distance_to_billboard) or 1 * length(distance_to_billboard)
     // so
 
-    // float rayLength = -1.0f * abs(length(cameraPosition - billboardPosition[i])) / dot(billboardNormal, ray_direction);
+    // float rayLength = -1.0f * abs(length(cameraPosition - billboardPositions[i])) / dot(billboardNormal, ray_direction);
 
     // actually it seems like the order of the vectors doesn't matter, so the topside becomes dot (v, normalize(v)) which is just length(v)
 
     // color = vec4(1.0f - dot(normalize(ray_direction), billboardNormal));
     // return;
 
-    float rayLength = length(billboardPosition[i] - cameraPosition) / dot(billboardNormal, normalize(ray_direction));
+    float rayLength = length(billboardPositions[i] - cameraPosition) / dot(billboardNormal, normalize(ray_direction));
 
     // if (u < 0.5) {
     //   color = vec4(rayLength / 10);
@@ -222,19 +222,19 @@ void main() {
 
     if (dot(billboardNormal, normalize(ray_direction)) > 0) {
       vec3 rayPoint = cameraPosition + rayLength*normalize(ray_direction);
-      vec3 planarPixel = rayPoint - billboardPosition[i];
+      vec3 planarPixel = rayPoint - billboardPositions[i];
 
-      // vec3 rayInsideBillboard = step(billboardPosition - billboardSize, rayPoint);
-      // rayInsideBillboard += step(billboardPosition + billboardSize, rayPoint);
+      // vec3 rayInsideBillboard = step(billboardPositions - billboardSize, rayPoint);
+      // rayInsideBillboard += step(billboardPositions + billboardSize, rayPoint);
       // bool isOnBillboard = 6 == rayInsideBillboard.x+rayInsideBillboard.y+rayInsideBillboard.z;
 
-      // vec3 rayInsideBillboard = rayPoint - billboardPosition;
+      // vec3 rayInsideBillboard = rayPoint - billboardPositions;
       // bool isOnBillboard = rayInsideBillboard.x > 0 && rayInsideBillboard.y > 0 && rayInsideBillboard.z > 0;
       //      isOnBillboard = rayInsideBillboard.x < billboardSize.x && rayInsideBillboard.y < billboardSize.y && rayInsideBillboard.z < billboardSize.z;
 
-      // vec3 billBoardBounds = billboardPosition + billboardSize;
+      // vec3 billBoardBounds = billboardPositions + billboardSize;
 
-      // bool isOnBillboard = rayPoint.x > billboardPosition.x && rayPoint.y > billboardPosition.y && rayPoint.z > billboardPosition.z;
+      // bool isOnBillboard = rayPoint.x > billboardPositions.x && rayPoint.y > billboardPositions.y && rayPoint.z > billboardPositions.z;
       //      isOnBillboard = rayPoint.x < billBoardBounds.x && rayPoint.y < billBoardBounds.y && rayPoint.z < billBoardBounds.z;
 
       // if (isOnBillboard) {

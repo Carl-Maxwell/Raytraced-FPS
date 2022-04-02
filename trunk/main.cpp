@@ -232,19 +232,21 @@ int main() {
   // Billboard Actors
   //
 
-  int billboard_count = 4;
+  const i32 billboard_count = 4;
 
-  m::vec3* billboardPosition = new m::vec3[billboard_count] {
-    {-22.0f, 1.0f, -22.0f},
-    {22.0f, 1.0f, 22.0f},
-    {-20.0f, -1.0f, 20.0f},
-    {20.0f, 1.0f, -20.0f}
-  };
+  Actor billboards[billboard_count];
+
+  m::vec3* billboardPositions = new m::vec3[billboard_count];// {
+  //   {-22.0f, 1.0f, -22.0f},
+  //   {22.0f, 1.0f, 22.0f},
+  //   {-20.0f, -1.0f, 20.0f},
+  //   {20.0f, 1.0f, -20.0f}
+  // };
 
   m::vec3* billboardTargetPositions = new m::vec3[billboard_count];
 
   for (int i = 0; i < billboard_count; i++) {
-    billboardTargetPositions[i] = billboardPosition[i] * -1;
+    billboardTargetPositions[i] = billboards[i].m_position * -1;
   }
 
   //---------------------------------------------------------------------------
@@ -415,10 +417,17 @@ int main() {
     // send variables off to shader
     //
 
+    // TODO shouldn't have to setup the uniforms like this.
+    // The data should just be laid out the right way in memory.
+
     for (int i=0; i < sphere_count; i++) {
       sphere_uniform[i] = sphere[i].m_position;
 
       sphere_uniform[i].w = sphere[i].sphere()->radius;
+    }
+
+    for (int i=0; i < billboard_count; i++) {
+      billboardPositions[i] = billboards[i].m_position;
     }
 
     shader.SetUniform1f("time", float(Application::the().time) );
@@ -428,8 +437,14 @@ int main() {
     shader.SetUniform1f("cameraYaw", &camera_yaw);
     shader.SetUniform1f("cameraPitch", &camera_pitch);
     shader.SetUniform("cameraPosition", 1, &cameraPosition);
-    shader.SetUniform("billboardPosition", billboard_count, billboardPosition);
+    shader.SetUniform("billboardPositions", billboard_count, billboardPositions);
     shader.SetUniform1i("billboard_count", billboard_count);
+
+    //
+    // Move actors
+    //
+
+    // Move spheres
 
     float movescale = 0.03f;
 
@@ -478,10 +493,10 @@ int main() {
 
     {
       for (int i = 0; i < billboard_count; i++) {
-        m::vec3 distance = billboardTargetPositions[i] - billboardPosition[i];
+        m::vec3 distance = billboardTargetPositions[i] - billboards[i].m_position;
         m::vec3 direction = (distance).norm();
 
-        billboardPosition[i] = billboardPosition[i] + direction * 0.1f;
+        billboards[i].m_position = billboards[i].m_position + direction * 0.1f;
 
         if (distance.length() < 3.0f) {
           billboardTargetPositions[i].x = RNG.randf(-40, 40);
@@ -499,7 +514,7 @@ int main() {
   glfwTerminate();
 
   delete[] billboardTargetPositions;
-  delete[] billboardPosition;
+  delete[] billboardPositions;
   delete[] map;
 
   return 0;
