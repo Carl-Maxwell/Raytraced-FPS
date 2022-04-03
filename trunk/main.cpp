@@ -41,6 +41,7 @@
 // Includes that are actually part of this codebase (not external libraries)
 //
 
+#include "rng.h"
 #include "application.h"
 #include "texture.h"
 #include "shader.h"
@@ -101,78 +102,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 //
-// RNG
-//
-
-struct random{
-  std::default_random_engine engine;
-  std::uniform_int_distribution<unsigned long long> dist;
-  void setup_rng() {
-    // dist.seed((unsigned long)Application::the().startTime);
-  }
-
-  //
-  // Random Integers
-  //
-
-  int die(int sides) {
-    return die(1, sides);
-  }
-  int die(int n, int sides) {
-    int sum = 0;
-    for (int i=0; i < n; n++) {
-      sum += (_rngul() % sides) + 1;
-    }
-    return sum;
-  }
-  int randi32(int max = std::numeric_limits<int>::max()) { // 0..max
-    return _rngul() % max;
-  }
-  u64 _rng() {
-    return dist(engine);
-  }
-  u64 _rngul() {
-    return _rng();
-    // u64 data = 0;
-
-    // const u64 base = 2;
-    // const u64 useful_bits = 32;
-
-    // for (u64 bits = 0; bits < 64; bits += 32) {
-    //   data |= (rand() & m::pow(base, useful_bits)) << bits;
-    // }
-    // return data;
-
-    // TODO how random is this? Is it biased towards one thing or another?
-  }
-
-  //
-  // random floats
-  //
-
-  float randf() {
-    return float(_rngd());
-  }
-  float randf(float min, float max) { // min..max
-    double range = max-min;
-    return float( _rngd() * double(range) + double(min) );
-  }
-  // meant this to be f64, dunno if that's what double is?
-  double _rngd() { // 0..1
-    return (double( _rngul()%10'000'000'000'000'001 ) / 10'000'000'000'000'000.0f);
-
-    // note the off by 1 that comes from modulus ( for example rand()%4 is 0..3,
-      // so for 1d4 you'd need rand()%5 )
-  }
-} RNG;
-
-//
 // Entry point
 //
 
 int main() {
   Application::the();
-  RNG.setup_rng();
+  RNG::the().setup_rng();
 
   std::cout << "Starting Urbarak 3D...\n";
 
@@ -213,11 +148,11 @@ int main() {
   for(int i = 0; i < sphere_count; i += 1) {
     sphere[i].m_pType = PrimitiveType::sphere;
     sphere[i].m_position = m::vec3(
-      RNG.randf(-20, 20),
-      RNG.randf(-3, 3),
-      RNG.randf(-20, 20)
+      RNG::the().randf(-20, 20),
+      RNG::the().randf(-3, 3),
+      RNG::the().randf(-20, 20)
     );
-    sphere[i].sphere()->radius = RNG.randf(0.3f, sphere_max_radius);
+    sphere[i].sphere()->radius = RNG::the().randf(0.3f, sphere_max_radius);
   }
 
   sphere[0].m_position.x = 0;
@@ -459,9 +394,9 @@ int main() {
       float energy = (sphere_max_radius-radius);
       energy = energy < 0 ? 0 : energy;
 
-      sphere[ i ].m_position.x += movescale * ( RNG.randf(-1, 1) ) * energy;
-      sphere[ i ].m_position.y += movescale * ( RNG.randf(-1, 1) ) * energy;
-      sphere[ i ].m_position.z += movescale * ( RNG.randf(-1, 1) ) * energy;
+      sphere[ i ].m_position.x += movescale * ( RNG::the().randf(-1, 1) ) * energy;
+      sphere[ i ].m_position.y += movescale * ( RNG::the().randf(-1, 1) ) * energy;
+      sphere[ i ].m_position.z += movescale * ( RNG::the().randf(-1, 1) ) * energy;
 
       for (int i2 = 0; i2 < sphere_count; i2++) {
         float big_radius = sphere[i].sphere()->radius + sphere[i2].sphere()->radius;
@@ -500,8 +435,8 @@ int main() {
         billboards[i].m_position = billboards[i].m_position + direction * 0.1f;
 
         if (distance.length() < 3.0f) {
-          billboardTargetPositions[i].x = RNG.randf(-40, 40);
-          billboardTargetPositions[i].z = RNG.randf(-40, 40);
+          billboardTargetPositions[i].x = RNG::the().randf(-40, 40);
+          billboardTargetPositions[i].z = RNG::the().randf(-40, 40);
         }
 
       }
