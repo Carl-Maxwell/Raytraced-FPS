@@ -35,6 +35,7 @@
 
 #include "mvec3.h"
 #include "mmath.h"
+#include "mtypedefs.h"
 
 //
 // Includes that are actually part of this codebase (not external libraries)

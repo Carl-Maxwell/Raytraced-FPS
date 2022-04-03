@@ -5,6 +5,7 @@
 
 #include <cstddef>
 
+#include "mtypedefs.h"
 #include "mvec3.h"
 #include "mmath.h"
 // #include "texture.h" // compile error: cstring(26,13): error C2039: 'memchr': is not a member of '`global namespace''

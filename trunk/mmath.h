@@ -5,11 +5,6 @@
 
 #define pi 3.1415926535897932384626433832795
 
-typedef unsigned long long u64;
-typedef unsigned int u32;
-typedef int i32;
-typedef float f32;
-
 namespace m{
 
 inline float degrees_to_radians(float degrees) {

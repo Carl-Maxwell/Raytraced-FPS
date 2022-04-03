@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map>
 
+#include "mtypedefs.h"
 #include "mvec3.h"
 #include "mmath.h"
 
