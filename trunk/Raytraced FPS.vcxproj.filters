@@ -42,6 +42,9 @@
     <ClCompile Include="..\entry_point.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="noah.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actor.h">
@@ -80,5 +83,19 @@
     <ClInclude Include="texture.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="mtypedefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rng.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="uid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="noah.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+
+
   </ItemGroup>
 </Project>

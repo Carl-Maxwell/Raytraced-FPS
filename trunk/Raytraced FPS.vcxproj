@@ -154,6 +154,7 @@
     <ClCompile Include="application.cpp" />
     <ClCompile Include="dlog.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="noah.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="std_image.cpp" />
@@ -166,12 +167,16 @@
     <ClInclude Include="glDebugMessageCallback.h" />
     <ClInclude Include="linmath.h" />
     <ClInclude Include="mmath.h" />
+    <ClInclude Include="mtypedefs.h" />
     <ClInclude Include="mvec3.h" />
+    <ClInclude Include="noah.h" />
     <ClInclude Include="renderer.h" />
+    <ClInclude Include="rng.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stb_image_namespace.h" />
     <ClInclude Include="texture.h" />
+    <ClInclude Include="uid.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
