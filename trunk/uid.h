@@ -16,14 +16,29 @@ constexpr u64 index_bits{sizeof(u64) * 8 - uid_bits};
 constexpr u64 index_mask{ (u64{1} << index_bits) - 1};
 constexpr u64 uid_mask{ (u64{1} << uid_bits) - 1};
 
+// incrementing IDs can be useful for testing
 
+#ifdef UID_INCREMENTING
+u64 uid_index_size_max_blabha = 0;
+#endif
 
 struct Uid{
   u64 id;
   Uid() {
-    id = RNG::the().randu64(); // 0..u64 max
+    #ifndef UID_INCREMENTING
+      id = RNG::the().randu64(); // 0..u64 max
+    #else
+      id = uid_index_size_max_blabha++;
+    #endif
   };
-  std::string to_english() {
-    Noah::the().wordify(id);
+  std::string to_english() const {
+    #ifndef UID_INCREMENTING
+      return "uid(" + Noah::the().wordify(id) + ")";
+    #else
+      return "uid( " + std::to_string(id) + ")";
+    #endif
   };
+  bool operator<(const Uid &other) const {
+    return id < other.id;
+  }
 };

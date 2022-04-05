@@ -73,6 +73,10 @@ struct vec3{
     }
     return temp;
   }
+  vec3& operator+=(vec3 &other) {
+    *this = *this + other;
+    return *this;
+  }
 
   // vector functions
 

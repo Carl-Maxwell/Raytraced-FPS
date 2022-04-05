@@ -1,3 +1,4 @@
+#pragma once
 
 #include <string>
 #include <vector>
@@ -7,13 +8,6 @@
 
 
 #include "mtypedefs.h"
-
-namespace{ // unnamed namespace is only accesible within this file
-  std::string dictionary_filepath = 
-    "resources/noah-webster/noah_webster_1913_dictionary_uniqueWords_cleanedUp.txt";
-
-  // TODO is that only in this file or only in this translation unit?
-}
 
 class Noah{
 public:
@@ -28,6 +22,11 @@ public:
   std::vector<std::string> m_words;
 
   Noah() {
+    std::cout << "\nConstructing Noah's Dictionary of the English Language ...\n";
+
+    const std::string dictionary_filepath = 
+      "resources/noah-webster/noah_webster_1913_dictionary_uniqueWords_cleanedUp.txt";
+    
     std::ifstream stream(dictionary_filepath);
     
     if (!stream.is_open()) {

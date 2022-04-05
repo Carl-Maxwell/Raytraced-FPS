@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\components">
+      <UniqueIdentifier>{0ddd53f6-a102-47e1-bdb1-15a17ec7c080}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="actor.cpp">
@@ -41,6 +44,15 @@
     </ClCompile>
     <ClCompile Include="..\entry_point.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="component.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="components\transform_component.cpp">
+      <Filter>Source Files\components</Filter>
     </ClCompile>
     <ClCompile Include="noah.cpp">
       <Filter>Source Files</Filter>
@@ -83,6 +95,12 @@
     <ClInclude Include="texture.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="mtypedefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -92,10 +110,14 @@
     <ClInclude Include="uid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="components\transform_component.h">
+      <Filter>Source Files\components</Filter>
+    </ClInclude>
     <ClInclude Include="noah.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-
-
+    <ClInclude Include="components\sphere_component.h">
+      <Filter>Source Files\components</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

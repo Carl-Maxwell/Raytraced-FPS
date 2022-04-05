@@ -152,7 +152,10 @@
     <ClCompile Include="..\entry_point.cpp" />
     <ClCompile Include="actor.cpp" />
     <ClCompile Include="application.cpp" />
+    <ClCompile Include="component.cpp" />
+    <ClCompile Include="components\transform_component.cpp" />
     <ClCompile Include="dlog.cpp" />
+    <ClCompile Include="entity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="noah.cpp" />
     <ClCompile Include="renderer.cpp" />
@@ -163,7 +166,11 @@
   <ItemGroup>
     <ClInclude Include="actor.h" />
     <ClInclude Include="application.h" />
+    <ClInclude Include="component.h" />
+    <ClInclude Include="components\sphere_component.h" />
+    <ClInclude Include="components\transform_component.h" />
     <ClInclude Include="dlog.h" />
+    <ClInclude Include="entity.h" />
     <ClInclude Include="glDebugMessageCallback.h" />
     <ClInclude Include="linmath.h" />
     <ClInclude Include="mmath.h" />

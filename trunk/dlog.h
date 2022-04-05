@@ -15,6 +15,13 @@
 
 #define LOG(n) Log::the().push(std::to_string(n));
 
+class Print{
+public:
+  static void heading(std::string h) {
+    std::cout << "\n\n#\n# " << h << " \n#\n\n";
+  }
+};
+
 class Log{
 public:
   static Log& the() {

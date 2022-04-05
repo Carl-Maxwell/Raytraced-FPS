@@ -79,6 +79,14 @@ public:
     // note the off by 1 that comes from modulus ( for example rand()%4 is 0..3,
       // so for 1d4 you'd need rand()%5 )
   }
+
+  //
+  // Random vectors
+  //
+
+  m::vec3 randvec3(float min, float max) {
+    return m::vec3(randf(min, max), randf(min, max), randf(min, max));
+  }
 };
 
 #endif
