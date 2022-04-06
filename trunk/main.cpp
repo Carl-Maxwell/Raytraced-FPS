@@ -177,7 +177,7 @@ Entity* createSphere(m::vec3 position, f32 radius) {
   Uid id = nSphere->m_entity_id;
 
   if (scene.entity_by_uid.count(id) == 0) {
-    std::cout << "adding " << id.to_english() << " to entity_by_id at index[" << scene.entities.size()-1 << "]\n";
+    // std::cout << "adding " << id.to_english() << " to entity_by_id at index[" << scene.entities.size()-1 << "]\n";
   }
 
   // scene.entity_by_uid[nSphere->m_entity_id.id] = nSphere;
@@ -192,8 +192,8 @@ Entity* createSphere(m::vec3 position, f32 radius) {
     back++;
   }
 
-  std::cout << "inserted: " << nSphere->m_entity_id.id << ": " << nSphere->m_entity_id.to_english() << "\n";
-  std::cout << "which is: " << back->first.to_english() << ": "<< back->second->m_entity_id.to_english() << "\n";
+  // std::cout << "inserted: " << nSphere->m_entity_id.id << ": " << nSphere->m_entity_id.to_english() << "\n";
+  // std::cout << "which is: " << back->first.to_english() << ": "<< back->second->m_entity_id.to_english() << "\n";
 
   if (!success) {
     std::cout << "Insertion failed!\n";
@@ -212,14 +212,13 @@ Entity* createSphere(m::vec3 position, f32 radius) {
 //
 
 int main() {
+  Print::heading("Initializing");
+
   Application::the();
   RNG::the().setup_rng();
   Noah::the();
 
   std::cout << "Starting Urbarak 3D...\n";
-
-  // seed the RNG
-  std::srand(unsigned(std::time(nullptr)));
 
   //
   // Map
@@ -241,6 +240,8 @@ int main() {
   // Actors
   //---------------------------------------------------------------------------
 
+  Print::heading("Setting up actors");
+
   //
   // Setup the spheres
   //
@@ -252,7 +253,7 @@ int main() {
   // TODO is there some way to have sphere_uniform setup without setting the memory every frame?
   m::vec4* sphere_uniform = new m::vec4[sphere_count];
 
-  Print::heading("Creating spheres");
+  Print::heading2("Creating spheres");
 
   createSphere(m::vec3(0, -100.0f, 0), 100.0f);
 
@@ -279,6 +280,7 @@ int main() {
   //
   // Billboard Actors
   //
+  Print::heading2("Setting up billboard actors");
 
   const i32 billboard_count = 4;
 
@@ -297,9 +299,15 @@ int main() {
     billboardTargetPositions[i] = billboards[i].m_position * -1;
   }
 
+  // summarize actor initialization
+
+  Print::heading2("Initialized " + std::to_string(scene.entities.size()) + " actors into the scene");
+
   //---------------------------------------------------------------------------
   // Initialize Graphics
   //---------------------------------------------------------------------------
+
+  Print::heading("Initializing graphics");
 
   //
   // Initialize glfw
@@ -370,12 +378,18 @@ int main() {
   glEnableVertexAttribArray(0);
   glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
 
+  // Initialize shaders
+
+  Print::heading2("Initialize shaders");
+
   Shader shader("resources/shaders/primaryshader.glsl");
   shader.Bind();
 
   //
   // Load Images
   //
+
+  Print::heading2("Loading images");
 
   Texture badGuyImage = Texture("resources/images/badguy.png");
   badGuyImage.bind();
@@ -384,6 +398,8 @@ int main() {
   //---------------------------------------------------------------------------
   // Main loop
   //---------------------------------------------------------------------------
+
+  Print::heading("Main loop");
 
   // setup mouse position variables
 

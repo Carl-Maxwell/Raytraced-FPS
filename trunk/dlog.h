@@ -20,6 +20,9 @@ public:
   static void heading(std::string h) {
     std::cout << "\n\n#\n# " << h << " \n#\n\n";
   }
+  static void heading2(std::string h) {
+    std::cout << "\n\n# " << h << " \n";
+  }
 };
 
 class Log{
