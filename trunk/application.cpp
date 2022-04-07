@@ -3,6 +3,9 @@
 
 Application::Application() {
   this->startTime = getTimestamp();
+  frameStartTime = this->startTime;
+  frameEndTime = 0;
+  frameDelta = 1/120; // assuming 120 FPS to give a small delta for first frame
 }
 
 double Application::getTimestamp() {

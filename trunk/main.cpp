@@ -429,6 +429,11 @@ int main() {
 
     Renderer::the().Draw(shader);
 
+    Application::the().frameEndTime   = Application::the().getTimestamp();
+    Application::the().frameDelta     = Application::the().frameEndTime - Application::the().frameStartTime;
+    Print::now(std::to_string(Application::the().frameDelta));
+    Application::the().frameStartTime = Application::the().getTimestamp();
+
     Application::the().time = Application::the().getTimestamp();
     Log::the().tick();
 

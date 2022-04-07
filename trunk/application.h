@@ -12,6 +12,9 @@ public:
   double time;
   double startTime;
   double timeSinceStart();
+  double frameStartTime;
+  double frameEndTime;
+  double frameDelta;
   void close();
   double getTimestamp();
   Application();
