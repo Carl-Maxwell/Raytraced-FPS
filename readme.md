@@ -1,4 +1,4 @@
-![game screenshot](screenshot.png)
+![game screenshot](screenshot.PNG)
 
 I wrote this project as a hobby just to educate myself and practice working with 3D vectors and whatnot. Unfortunately it didn't go that well, ended up trying to write an entity component system and couldn't figure it out within the time I had for the project.
 
