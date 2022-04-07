@@ -157,6 +157,7 @@
     <ClCompile Include="dlog.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="marray.cpp" />
     <ClCompile Include="noah.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="shader.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="entity.h" />
     <ClInclude Include="glDebugMessageCallback.h" />
     <ClInclude Include="linmath.h" />
+    <ClInclude Include="marray.h" />
     <ClInclude Include="mmath.h" />
     <ClInclude Include="mtypedefs.h" />
     <ClInclude Include="mvec3.h" />

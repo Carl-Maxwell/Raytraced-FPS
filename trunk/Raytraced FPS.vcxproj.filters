@@ -57,6 +57,9 @@
     <ClCompile Include="noah.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="marray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="actor.h">
@@ -118,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="components\sphere_component.h">
       <Filter>Source Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="marray.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -23,6 +23,9 @@ public:
   static void heading2(std::string h) {
     std::cout << "\n\n# " << h << " \n";
   }
+  static void now(std::string thing) {
+    std::cout << thing << "\n";
+  }
 };
 
 class Log{

@@ -114,7 +114,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 //
 
 struct Scene{
-  std::vector<Entity*> entities;
+  m::Array<Entity> entities;
   std::vector<TransformComponent*> transformComponents;
   std::vector<SphereComponent*> sphereComponents;
   std::map<Uid, Entity*> entity_by_uid;
@@ -141,13 +141,14 @@ struct Scene{
       return nullptr;
     }
 
-    return entity_by_uid[id];
+    return output;
   }
   Entity* getSphere(int target_i) {
     // TODO this could just start at actual_i = target_i since it can't be less than that
     int sphere_i = 0;
-    for(int actual_i=0; actual_i < entities.size(); actual_i++) {
-      if (entities[actual_i]->getComponent<SphereComponent>("SphereComponent")) {
+    for(int actual_i=0; actual_i < entities.length(); actual_i++) {
+      auto sphereComp = entities[actual_i]->getComponent<SphereComponent>("SphereComponent");
+      if (sphereComp) {
         if (sphere_i == target_i) {
           return entities[actual_i];
         }
@@ -155,9 +156,13 @@ struct Scene{
         sphere_i++;
       }
     }
+
+    Print::now("Error! No sphere for index " + std::to_string(target_i) + " found!");
+
+    return nullptr;
   }
   u64 getEntityIndex(Uid id) {
-    for (int i = 0; i < entities.size(); i++) {
+    for (int i = 0; i < entities.length(); i++) {
       if (entities[i]->m_entity_id.id == id.id) {
         return i;
       }
@@ -171,9 +176,10 @@ Entity* createSphere(m::vec3 position, f32 radius) {
   scene.transformComponents.push_back(new TransformComponent(position));
   scene.sphereComponents.push_back(new SphereComponent(radius));
 
-  Entity* nSphere = new Entity;
+  // Entity* nSphere = new Entity;
 
-  scene.entities.push_back(nSphere);
+  scene.entities.push_back(Entity());
+  Entity* nSphere = &scene.entities.back();
 
   Uid id = nSphere->m_entity_id;
 
@@ -219,7 +225,10 @@ int main() {
   RNG::the().setup_rng();
   Noah::the();
 
+  scene.entities.grow(256);
+
   std::cout << "Starting Urbarak 3D...\n";
+
 
   //
   // Map
@@ -302,7 +311,7 @@ int main() {
 
   // summarize actor initialization
 
-  Print::heading2("Initialized " + std::to_string(scene.entities.size()) + " actors into the scene");
+  Print::heading2("Initialized " + std::to_string(scene.entities.length()) + " actors into the scene");
 
   //---------------------------------------------------------------------------
   // Initialize Graphics
