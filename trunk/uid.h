@@ -41,4 +41,26 @@ struct Uid{
   bool operator<(const Uid &other) const {
     return id < other.id;
   }
+  bool operator==(const Uid& other) const {
+    return id == other.id;
+  }
 };
+
+namespace std {
+
+  template <>
+  struct hash<Uid>
+  {
+    std::size_t operator()(const Uid& id) const
+    {
+      using std::size_t;
+      using std::hash;
+
+      // this should just use the default u64 hashing function from std
+      // ... hopefully.
+
+      return (hash<u64>()(id.id));
+    }
+  };
+
+}

@@ -53,9 +53,9 @@
 #include "actor.h"
 
 #include "entity.h"
-#include "component.h"
-#include "components/transform_component.h"
-#include "components/sphere_component.h"
+// #include "component.h"
+// #include "components/transform_component.h"
+// #include "components/sphere_component.h"
 
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
 // To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
@@ -115,9 +115,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 struct Scene{
   m::Array<Entity> entities;
-  std::vector<TransformComponent*> transformComponents;
-  std::vector<SphereComponent*> sphereComponents;
-  std::map<Uid, Entity*> entity_by_uid;
+  m::Array<TransformComponent> transformComponents;
+  m::Array<SphereComponent> sphereComponents;
+  std::unordered_map<Uid, Entity*> entity_by_uid;
   Entity* getEntity(Uid id) {
     if (entity_by_uid.count(id) == 0) {
       std::cout << "Error! No entity " << id.to_english() << "\n";
@@ -148,7 +148,7 @@ struct Scene{
     int sphere_i = 0;
     for(int actual_i=0; actual_i < entities.length(); actual_i++) {
       auto sphereComp = entities[actual_i]->getComponent<SphereComponent>("SphereComponent");
-      if (sphereComp) {
+      if (&sphereComp) {
         if (sphere_i == target_i) {
           return entities[actual_i];
         }
@@ -167,14 +167,14 @@ struct Scene{
         return i;
       }
     }
-    return u64(-1);
+    return u64(-1); // this returns u64.max() which is 2**64
   }
 
 } scene;
 
 Entity* createSphere(m::vec3 position, f32 radius) {
-  scene.transformComponents.push_back(new TransformComponent(position));
-  scene.sphereComponents.push_back(new SphereComponent(radius));
+  scene.transformComponents.push_back(TransformComponent(position));
+  scene.sphereComponents.push_back(SphereComponent(radius));
 
   // Entity* nSphere = new Entity;
 
@@ -208,8 +208,8 @@ Entity* createSphere(m::vec3 position, f32 radius) {
 
   scene.getEntity(id);
 
-  nSphere->pushComponent<TransformComponent>( scene.transformComponents.back() );
-  nSphere->pushComponent<SphereComponent   >( scene.sphereComponents.back() );
+  nSphere->pushComponent<TransformComponent>( &scene.transformComponents.back() );
+  nSphere->pushComponent<SphereComponent   >( &scene.sphereComponents.back() );
 
   return nSphere;
 }
@@ -226,6 +226,8 @@ int main() {
   Noah::the();
 
   scene.entities.grow(256);
+  scene.transformComponents.grow(256);
+  scene.sphereComponents.grow(256);
 
   std::cout << "Starting Urbarak 3D...\n";
 
@@ -260,7 +262,7 @@ int main() {
   const int sphere_max_radius = 2.0f;
   Actor sphere[sphere_count];
 
-  // TODO is there some way to have sphere_uniform setup without setting the memory every frame?
+  // TODO is there some way to have sphere_uniform setup without rearranging the data every frame?
   m::vec4* sphere_uniform = new m::vec4[sphere_count];
 
   Print::heading2("Creating spheres");
@@ -502,11 +504,11 @@ int main() {
     for (int i=0; i < sphere_count; i++) {
       Entity* theSphere = scene.getEntity(scene.sphereComponents[i]->m_entity_id);
 
-      TransformComponent* transf_comp = theSphere->getComponent<TransformComponent>("TransformComponent");
-      SphereComponent*    sphere_comp = theSphere->getComponent<SphereComponent   >("SphereComponent");
+      TransformComponent& transf_comp = theSphere->getComponent<TransformComponent>("TransformComponent");
+      SphereComponent&    sphere_comp = theSphere->getComponent<SphereComponent   >("SphereComponent");
 
-      sphere_uniform[i]   = theSphere->getComponent<TransformComponent>("TransformComponent")->position;
-      sphere_uniform[i].w = theSphere->getComponent<SphereComponent>("SphereComponent")->radius;
+      sphere_uniform[i]   = transf_comp.position;
+      sphere_uniform[i].w = sphere_comp.radius;
     }
 
     for (int i=0; i < billboard_count; i++) {
@@ -532,8 +534,9 @@ int main() {
     float movescale = 0.03f;
 
     for (int i=0; i < sphere_count; i++) {
-      Entity* theSphere = scene.getEntity(scene.sphereComponents[i]->m_entity_id);
-      float radius = theSphere->getComponent<SphereComponent>("SphereComponent")->radius;
+      Entity* theSphere = scene.entities[i];
+      // Entity* theSphere = scene.getEntity(scene.sphereComponents[i]->m_entity_id);
+      float radius = theSphere->getComponent<SphereComponent>("SphereComponent").radius;
 
       if (radius > sphere_max_radius) {
         continue;
@@ -542,19 +545,22 @@ int main() {
       float energy = (sphere_max_radius-radius);
       energy = energy < 0 ? 0 : energy;
 
-      theSphere->getComponent<TransformComponent>("TransformComponent")->position += RNG::the().randvec3(-1, 1) * energy;
+      auto& transf_comp = theSphere->getComponent<TransformComponent>("TransformComponent");
+
+      transf_comp.position += RNG::the().randvec3(-1, 1) * energy;
 
       for (int i2 = 0; i2 < sphere_count; i2++) {
-        Entity* sphere2 = scene.getEntity(scene.sphereComponents[i2]->m_entity_id);
-        float radius2 = sphere2->getComponent<SphereComponent>("SphereComponent")->radius;
+        Entity* sphere2 = scene.entities[i2];
+        // Entity* sphere2 = scene.getEntity(scene.sphereComponents[i2]->m_entity_id);
+        float radius2 = sphere2->getComponent<SphereComponent>("SphereComponent").radius;
         float big_radius = radius + radius2;
 
         if (i == i2) {
           continue;
         }
 
-        m::vec3 position  = theSphere ->getComponent<TransformComponent>("TransformComponent")->position;
-        m::vec3 position2 = sphere2   ->getComponent<TransformComponent>("TransformComponent")->position;
+        m::vec3 position  = transf_comp.position;
+        m::vec3 position2 = sphere2   ->getComponent<TransformComponent>("TransformComponent").position;
 
         if ((position - position2).length() < big_radius) {
           if (radius < radius2) {
@@ -568,8 +574,8 @@ int main() {
           position = position + (position - cameraPosition).norm() * player_speed;
         }
 
-        theSphere ->getComponent<TransformComponent>("TransformComponent")->position = position;
-        sphere2   ->getComponent<TransformComponent>("TransformComponent")->position = position2;
+        theSphere ->getComponent<TransformComponent>("TransformComponent").position = position;
+        sphere2   ->getComponent<TransformComponent>("TransformComponent").position = position2;
       }
     }
 
@@ -589,6 +595,8 @@ int main() {
 
       }
     }
+
+
 
     glfwSwapBuffers(window); // swap front and back buffers
 

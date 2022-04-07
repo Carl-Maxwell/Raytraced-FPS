@@ -45,6 +45,7 @@ public:
   T& back() { return m_data[m_length-1]; }
 
   u64 length() { return m_length; }
+  u64 size() { return m_size; }
 };
 
 }

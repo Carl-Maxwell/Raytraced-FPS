@@ -8,7 +8,9 @@ public:
   m::vec3 rotation;
   m::vec3 scale;
 
+  TransformComponent() {}
   TransformComponent(m::vec3 p) : position(p) {}
+
 
   static ComponentId name() { return "TransformComponent"; }
 };
